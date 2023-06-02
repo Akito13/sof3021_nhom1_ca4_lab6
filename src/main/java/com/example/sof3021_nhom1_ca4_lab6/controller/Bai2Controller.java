@@ -17,9 +17,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
-public class Bai2Controller{
-    @Autowired
-    private HttpSession session;
+public class Bai2Controller {
     @Autowired
     private SachRepository sachRepo;
 
@@ -27,16 +25,16 @@ public class Bai2Controller{
     public String searchAndPage(Model model,
                                 @RequestParam("keywords") Optional<String> kw,
                                 @RequestParam("p") Optional<Integer> p,
-                                @RequestParam("order") Optional<String> order){
+                                @RequestParam("order") Optional<String> order) {
         String keywords = kw.orElse("");
         Sort sort = null;
-        if(order.isEmpty()) {
-            sort = Sort.by(Sort.Direction.ASC,  "tensach");
+        if (order.isEmpty()) {
+            sort = Sort.by(Sort.Direction.ASC, "tensach");
         } else {
             String by = order.get();
             if (by.equals("d")) {
                 sort = Sort.by(Sort.Direction.DESC, "nxb");
-            } else if (by.equals("a")){
+            } else if (by.equals("a")) {
                 sort = Sort.by(Sort.Direction.ASC, "nxb");
             } else if (by.equals("pd")) {
                 sort = Sort.by(Sort.Direction.DESC, "gia");
@@ -46,7 +44,7 @@ public class Bai2Controller{
             model.addAttribute("order", by);
         }
         Pageable pageable = PageRequest.of(p.orElse(0), 5, sort);
-        Page<Sach> page = sachRepo.findByTensach("%"+keywords+"%", pageable);
+        Page<Sach> page = sachRepo.findByTensach("%" + keywords + "%", pageable);
         model.addAttribute("page", page);
         model.addAttribute("kw", keywords);
         return "Bai2";

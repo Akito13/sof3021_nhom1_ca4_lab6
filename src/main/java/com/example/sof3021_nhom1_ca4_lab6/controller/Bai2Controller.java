@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,13 +26,28 @@ public class Bai2Controller{
     @RequestMapping("/search-and-page")
     public String searchAndPage(Model model,
                                 @RequestParam("keywords") Optional<String> kw,
-                                @RequestParam("p") Optional<Integer> p){
+                                @RequestParam("p") Optional<Integer> p,
+                                @RequestParam("order") Optional<String> order){
         String keywords = kw.orElse("");
-        Pageable pageable = PageRequest.of(p.orElse(0), 5);
+        Sort sort = null;
+        if(order.isEmpty()) {
+            sort = Sort.by(Sort.Direction.ASC,  "tensach");
+        } else {
+            String by = order.get();
+            if (by.equals("d")) {
+                sort = Sort.by(Sort.Direction.DESC, "nxb");
+            } else if (by.equals("a")){
+                sort = Sort.by(Sort.Direction.ASC, "nxb");
+            } else if (by.equals("pd")) {
+                sort = Sort.by(Sort.Direction.DESC, "gia");
+            } else if (by.equals("pa")) {
+                sort = Sort.by(Sort.Direction.ASC, "gia");
+            }
+        }
+        Pageable pageable = PageRequest.of(p.orElse(0), 5, sort);
         Page<Sach> page = sachRepo.findByTensach("%"+keywords+"%", pageable);
         model.addAttribute("page", page);
         model.addAttribute("kw", keywords);
         return "Bai2";
     }
-
 }

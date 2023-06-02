@@ -25,7 +25,13 @@
     <h1>Search by price</h1>
     <form action="${pageContext.request.contextPath}/product/search-and-page" method="post">
         <input name="keywords" value="${kw}" placeholder="Keywords" />
-        <button>Search</button>
+        <button>Search</button><br>
+        <select name="order" onchange="this.form.submit();">
+            <option value="d">Order by: Latest</option>
+            <option value="a">Order by: Oldest</option>
+            <option value="pd">Giá cao đến thấp</option>
+            <option value="pa">Giá thấp đến cao</option>
+        </select>
     </form>
     <table class="table">
         <thead>

@@ -43,6 +43,7 @@ public class Bai2Controller{
             } else if (by.equals("pa")) {
                 sort = Sort.by(Sort.Direction.ASC, "gia");
             }
+            model.addAttribute("order", by);
         }
         Pageable pageable = PageRequest.of(p.orElse(0), 5, sort);
         Page<Sach> page = sachRepo.findByTensach("%"+keywords+"%", pageable);

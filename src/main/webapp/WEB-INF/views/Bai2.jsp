@@ -53,10 +53,18 @@
             </c:forEach>
         </tbody>
     </table>
-    <a href="${pageContext.request.contextPath}/product/search-and-page?p=0&keywords=${kw}">First</a>
-    <a href="${pageContext.request.contextPath}/product/search-and-page?p=${page.number-1 < 0 ? 0 : page.number - 1}&keywords=${kw}">Previous</a>
-    <a href="${pageContext.request.contextPath}/product/search-and-page?p=${page.number+1 >= page.totalPages ? page.totalPages-1 : page.number+1}&keywords=${kw}">Next</a>
-    <a href="${pageContext.request.contextPath}/product/search-and-page?p=${page.totalPages-1}&keywords=${kw}">Last</a>
+    <c:set var="keyword" value=""/>
+    <c:if test="${not empty kw}">
+        <c:set var="keyword" value="&keywords=${kw}" />
+    </c:if>
+    <c:set var="orders" value=""/>
+    <c:if test="${not empty order}">
+        <c:set var="orders" value="&order=${order}" />
+    </c:if>
+    <a href="${pageContext.request.contextPath}/product/search-and-page?p=0<c:out value="${keyword}"/><c:out value="${orders}"/>">First</a>
+    <a href="${pageContext.request.contextPath}/product/search-and-page?p=${page.number-1 < 0 ? 0 : page.number - 1}<c:out value="${keyword}"/><c:out value="${orders}"/>">Previous</a>
+    <a href="${pageContext.request.contextPath}/product/search-and-page?p=${page.number+1 >= page.totalPages ? page.totalPages-1 : page.number+1}<c:out value="${keyword}"/><c:out value="${orders}"/>">Next</a>
+    <a href="${pageContext.request.contextPath}/product/search-and-page?p=${page.totalPages-1}<c:out value="${keyword}"/><c:out value="${orders}"/>">Last</a>
     <ul>
         <li>Số sách trong trang hiện tại: ${page.numberOfElements}</li>
         <li>Trang số: ${page.number}</li>

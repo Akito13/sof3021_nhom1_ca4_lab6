@@ -2,7 +2,6 @@ package com.example.sof3021_nhom1_ca4_lab6.controller;
 
 import com.example.sof3021_nhom1_ca4_lab6.model.Sach;
 import com.example.sof3021_nhom1_ca4_lab6.repository.SachRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,22 +15,20 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
-public class Bai2Controller{
-    @Autowired
-    private HttpSession session;
+public class Bai5Controller {
+
     @Autowired
     private SachRepository sachRepo;
 
-    @RequestMapping("/search-and-page")
-    public String searchAndPage(Model model,
-                                @RequestParam("keywords") Optional<String> kw,
-                                @RequestParam("p") Optional<Integer> p){
+    @RequestMapping("/search-and-page5")
+    public String search(Model model,
+                         @RequestParam("keywords") Optional<String> kw,
+                         @RequestParam("p") Optional<Integer> p){
         String keywords = kw.orElse("");
-        Pageable pageable = PageRequest.of(p.orElse(0), 5);
-        Page<Sach> page = sachRepo.findByTensach("%"+keywords+"%", pageable);
+        Pageable pageable = PageRequest.of(p.orElse(0),5);
+        Page<Sach> page = sachRepo.findAllByTensachLike("%"+keywords+"%",pageable);
+        model.addAttribute("kw",keywords);
         model.addAttribute("page", page);
-        model.addAttribute("kw", keywords);
-        return "Bai2";
+        return "Bai5";
     }
-
 }

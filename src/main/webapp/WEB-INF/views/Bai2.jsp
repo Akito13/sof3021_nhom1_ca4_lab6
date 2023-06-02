@@ -24,8 +24,14 @@
 <body>
     <h1>Search by price</h1>
     <form action="${pageContext.request.contextPath}/product/search-and-page" method="post">
-        <input name="keywords" value="${keywords}" placeholder="Keywords" />
-        <button>Search</button>
+        <input name="keywords" value="${kw}" placeholder="Keywords" />
+        <button>Search</button><br>
+        <select name="order" onchange="this.form.submit();">
+            <option value="d">Order by: Latest</option>
+            <option value="a">Order by: Oldest</option>
+            <option value="pd">Giá cao đến thấp</option>
+            <option value="pa">Giá thấp đến cao</option>
+        </select>
     </form>
     <table class="table">
         <thead>
@@ -47,15 +53,23 @@
             </c:forEach>
         </tbody>
     </table>
-    <a href="/product/search-and-page?p=0">First</a>
-    <a href="/product/search-and-page?p=${page.number-1}">Previous</a>
-    <a href="/product/search-and-page?p=${page.number+1}">Next</a>
-    <a href="/product/search-and-page?p=${page.totalPages-1}">Last</a>
+    <c:set var="keyword" value=""/>
+    <c:if test="${not empty kw}">
+        <c:set var="keyword" value="&keywords=${kw}" />
+    </c:if>
+    <c:set var="orders" value=""/>
+    <c:if test="${not empty order}">
+        <c:set var="orders" value="&order=${order}" />
+    </c:if>
+    <a href="${pageContext.request.contextPath}/product/search-and-page?p=0<c:out value="${keyword}"/><c:out value="${orders}"/>">First</a>
+    <a href="${pageContext.request.contextPath}/product/search-and-page?p=${page.number-1 < 0 ? 0 : page.number - 1}<c:out value="${keyword}"/><c:out value="${orders}"/>">Previous</a>
+    <a href="${pageContext.request.contextPath}/product/search-and-page?p=${page.number+1 >= page.totalPages ? page.totalPages-1 : page.number+1}<c:out value="${keyword}"/><c:out value="${orders}"/>">Next</a>
+    <a href="${pageContext.request.contextPath}/product/search-and-page?p=${page.totalPages-1}<c:out value="${keyword}"/><c:out value="${orders}"/>">Last</a>
     <ul>
-        <li>Số thực thể hiện tại: ${page.numberOfElements}</li>
+        <li>Số sách trong trang hiện tại: ${page.numberOfElements}</li>
         <li>Trang số: ${page.number}</li>
-        <li>Kích thước trang: ${page.size}</li>
-        <li>Tổng số thực thể: ${page.totalElements}</li>
+        <li>Số sách tối đa trong 1 trang: ${page.size}</li>
+        <li>Tổng số sách: ${page.totalElements}</li>
         <li>Tổng số trang: ${page.totalPages}</li>
     </ul>
 </body>

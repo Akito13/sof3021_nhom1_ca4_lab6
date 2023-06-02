@@ -1,8 +1,10 @@
 package com.example.sof3021_nhom1_ca4_lab6.model;
 
+import com.example.sof3021_nhom1_ca4_lab6.custom.MySerializable;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
